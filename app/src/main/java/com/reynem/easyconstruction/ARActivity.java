@@ -1,5 +1,6 @@
 package com.reynem.easyconstruction;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -7,6 +8,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -17,6 +19,7 @@ import com.reynem.easyconstruction.databinding.ActivityAractivityBinding;
 
 public class ARActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CAMERA_PERMISSION = 1;
     private AppBarConfiguration appBarConfiguration;
     private ActivityAractivityBinding binding;
 
@@ -48,5 +51,18 @@ public class ARActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_aractivity);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                return;
+            } else {
+                Toast.makeText(this, "Permission denied for camera", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
